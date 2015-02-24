@@ -8,7 +8,7 @@ But it is also made to describe the entire flow of the application, from packagi
 ## Table of Contents
 
   1. [Application Structure](#application-structure)
-  2. [Tooling](#Tooling)
+  2. [Modules](#modules)
 
 ## Application Structure
 
@@ -48,6 +48,18 @@ Few features are default to each application:
             index.controller.js
         
 ```					
+
+## Modules
+
+Modules represent features, for each feature a module lives.
+
+The main application module (app.module) has to remain small and will mainly hold all modules together.
+From that point, the app.module will represent the manifest of all features of the application.
+
+Each feature should specify on which features it rely.
+It make them reusable out of the context of the app.module.
+
+	> Not mandatory for small applications.
 
 ## Tooling
  - Node.js
