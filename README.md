@@ -23,11 +23,31 @@ The chosen one is the *Folder By Features* over *Folder By Type*.
 - Make the application more scalable
 - Easier to maintain (Add, remove, move feature)
 
-					
-	
+Few features are default to each application:
+- Blocks : Will contain common services and configuration
+- Components : Will contain common directives
+- Core : Contains shared constants and filters
+- Layout : Will contain the main application files
 
-
-
+```javascript
+    app/
+        app.module.js
+        app.config.js
+        app.routes.js
+        blocks/
+			exceptions.module.js
+			exceptions.config.js
+        components/
+            my.directive.js
+            my.directive.html
+        core/
+        	constants.js
+        	filters.js
+        layout/
+            index.html
+            index.controller.js
+        
+```					
 
 ## Tooling
  - Node.js
