@@ -34,22 +34,22 @@ Few features are default to each application:
 - Layout : Will contain the main application files
 
 ```javascript
-    app/
-        app.module.js
-        app.config.js
-        app.routes.js
-        blocks/
-			exceptions.module.js
-			exceptions.config.js
-        components/
-            my.directive.js
-            my.directive.html
-        core/
-        	constants.js
-        	filters.js
-        layout/
-            index.html
-            index.controller.js
+app/
+    app.module.js
+    app.config.js
+    app.routes.js
+    blocks/
+		exceptions.module.js
+		exceptions.config.js
+    components/
+        my.directive.js
+        my.directive.html
+    core/
+    	constants.js
+    	filters.js
+    layout/
+        index.html
+        index.controller.js
         
 ```					
 
@@ -96,9 +96,9 @@ angular
 
 ## Injections
 
-There are three different way to inject dependencies in angular:
+There are three differents way to inject dependencies in angular:
 
-### Implicit
+### Implicit Annotation
 
 Angular resolves dependencies based on the name of parameters.
 
@@ -112,7 +112,7 @@ function myController(myService) {}
 
 Can be problematic after minification, parameters will be renamed like 'a' and will break the resolution of the dependencies.
 
-### Injection list
+### Inline Array Annotation
 
 Specify on the controller function the list of modules.
 
@@ -127,7 +127,7 @@ angular
 That approach is minification safe, but there is still room for improvement.
 It makes it difficult to detect which dependencies are injected.
 
-### Property annotation $inject 
+### $inject Array Annotation
 
 Specify all dependencies to inject through the $inject property of the controller function.
 
@@ -150,9 +150,103 @@ Another advantage is that it mimmics the way [ngAnnotate](#ngAnnotate) works.
 Controllers have to stay small and focused.
 All logic not related to that will be moved to services.
 
-### Example
+### ControllerAs over $scope
+
+ControllerAs approach of controller resolve a inheritence issue encoutered with $scope.
+It allows a better syntax by specifying a namespace for each controller.
+Still accessible from the $scope.myController (where myController is the name chosen).
+
+```html
+<div ng-controller="LayoutController As layout">
+	<span>{{ layout.title }}</span>
+</div>
+```
 
 ```javascript
+
+angular
+	.module('app.layout')
+	.controller('LayoutController', layoutController);
+	
+layoutController.$inject = ['$scope'];
+function layoutController ($scope) {
+	this.title = "Controller as fever !";
+	console.log($scope.layout === this); /// will return true
+}
+
+```
+
+When working with *this* in javascript, it is always a safe choice to store it in a variable.
+As *this* is contextual, it may not be the one expected depending on the context.
+When doing so, it is a better choice to stay consitent with the name of he variable.
+In this document it will be named 'me'.
+
+```javascript
+
+function layoutController ($scope) {
+	var me = this;
+	
+	function accessMe () {
+		me.value = "I'm the controller!";
+	}
+}
+
+```
+
+
+### Inheritance
+
+Controllers don't inherit directly from each other.
+Meaning a ChildController will not have the "value" property of his ParentController.
+However ParentController is accessible within the ChildController area.
+
+```html
+<div ng-controller="ParentController As parent">
+	<span>{{ parent.value }}</span>
+	<div ng-controller="ChildController As child">
+		<span>{{ parent.value }}
+	</div>
+</div>
+```
+
+```javascript
+// Parent
+angular
+	.module('app.inheritance')
+	.controller('ParentController', parentController);
+	
+function parentController () {
+	var me = this;
+	me.value = "I'm the parent";
+}
+
+// Child
+angular
+	.module('app.inheritance')
+	.controller('ChildController', childController);
+	
+function childController () {
+	var me = this;
+	console.log(me.value); // will log undefined
+}
+```
+
+Parent can be accessed from the Scope :
+
+```javascript
+
+$scope.parent.value; // where parent is the name given to the controller 
+
+```
+
+Child can copy parent properties.
+Has to be used carefully as ChildController cannot change parent and will not be notified of changes made on the parent
+
+```javascript
+
+function childController () {
+	ParentController.apply(this, options);
+}
 
 ```
 
