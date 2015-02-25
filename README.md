@@ -5,6 +5,8 @@
 One of the purpose is to describe global guidelines to follow for Web Applications using Angular.js.
 But it is also made to describe the entire flow of the application, from packaging to deployment.
 
+*Inspired by [John Papa](https://github.com/johnpapa/angularjs-styleguide)* 
+
 ## Table of Contents
 
   1. [Application Structure](#application-structure)
@@ -51,6 +53,8 @@ Few features are default to each application:
 
 ## Modules
 
+### Description 
+
 Modules represent features, for each feature a module lives.
 
 The main application module (app.module) has to remain small and will mainly hold all modules together.
@@ -60,6 +64,33 @@ Each feature should specify on which features it rely.
 It make them reusable out of the context of the app.module.
 
 	> Not mandatory for small applications.
+	
+### Example
+
+```javascript
+
+// Main application module
+angular
+	.module('app', [
+		'app.core',
+		'app.components',
+		'app.layout'
+	]);
+	
+// Core application module
+angular
+	.module('app.core', [
+		'app.blocks'
+	]);
+
+//Feature application module
+angular
+	.module('app.layout', [
+		'app.core',
+		'app.blocks'
+	]);
+
+```
 
 ## Tooling
  - Node.js
