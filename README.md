@@ -11,6 +11,8 @@ But it is also made to describe the entire flow of the application, from packagi
 
   1. [Application Structure](#application-structure)
   2. [Modules](#modules)
+  3. [Injections](#injections)
+  4. [Controllers](#controllers)
 
 ## Application Structure
 
@@ -18,7 +20,7 @@ When talking about Application Structure, there is multiple possible approach.
 
 The chosen one is the *Folder By Features* over *Folder By Type*.
 
-*Why ?* : 
+*Reasons* : 
 
 - Easier to locate files 
 - Purpose of each part of the application becomes obvious
@@ -89,6 +91,68 @@ angular
 		'app.core',
 		'app.blocks'
 	]);
+
+```
+
+## Injections
+
+There are three different way to inject dependencies in angular:
+
+### Implicit
+
+Angular resolves dependencies based on the name of parameters.
+
+```javascript
+angular
+	.module('app.layout')
+	.controller('MyController', myController);
+
+function myController(myService) {}
+```
+
+Can be problematic after minification, parameters will be renamed like 'a' and will break the resolution of the dependencies.
+
+### Injection list
+
+Specify on the controller function the list of modules.
+
+```javascript
+angular
+	.module('app.layout')
+	.controller('MyController, ["myService", myController]);
+	
+	function myController(myService) {}
+```
+
+That approach is minification safe, but there is still room for improvement.
+It makes it difficult to detect which dependencies are injected.
+
+### Property annotation $inject 
+
+Specify all dependencies to inject through the $inject property of the controller function.
+
+```javascript
+angular
+	.module('app.layout')
+	.controller('MyController', myController);
+	
+	myController.$inject = ['myService'];
+	function myController (myService) {}
+```
+
+This approach is minification safe and keeps everything clear.
+Another advantage is that it mimmics the way [ngAnnotate](#ngAnnotate) works.
+
+## Controllers
+
+### Description
+
+Controllers have to stay small and focused.
+All logic not related to that will be moved to services.
+
+### Example
+
+```javascript
 
 ```
 
