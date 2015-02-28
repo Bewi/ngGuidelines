@@ -57,8 +57,9 @@ app/
 ## Naming conventions
 
 ## Files
-Files will use snake-casing for the name, separted by a dot for the type and language
-my-name.type.js
+Files will use snake-casing for the name, separted by a dot for the type and language to look like :
+
+	my-name.type.js
 
 - Modules: my-feature-name.module.js
 - Services & Factories: my-service-name.service.js
@@ -67,12 +68,19 @@ my-name.type.js
 - Filters: my-feature.filters.js
 - Constants: my-feature.constants.js
 - Config: my-feature.config.js
+- Routes: my-feature.routes.js
 
 It makes it easier to directly identify files by their name.
 
+> Main application files will always represent the "app" feature.
+
+> app.module.js, app.config.js, app.routes.js, ...
+
 ## In code
 
-Global casing will be camel-casing.
+### Modules
+
+
 
 ### Controllers
 
@@ -91,9 +99,9 @@ app
 
 ```
 
-### Factories
+### Factories & Services
 
-Factories will be camel-cased.
+Factories & Services will be camel-cased.
 
 ```javascript
 
@@ -108,7 +116,22 @@ function logger () { ... }
 ### Directives
 
 Directives will be camel-cased.
-A area prefix will be used to describe where the directive belongs
+An area prefix will be used to describe where the directive belongs.
+
+*Reasons:*
+
+	- It make it easier to determine where does the directive come from.
+	- Avoid conflict.
+
+```javascript
+
+app
+	.module('app.components')
+	.directive('xxMyDirective', xxMyDirective);
+	
+funtion xxMyDirective () { ... }
+	
+```
 
 ## Modules
 
@@ -122,7 +145,7 @@ From that point, the app.module will represent the manifest of all features of t
 Each feature should specify on which features it rely.
 It make them reusable out of the context of the app.module.
 
-	> Not mandatory for small applications.
+> Not mandatory for small applications.
 	
 ### Example
 
