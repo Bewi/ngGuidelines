@@ -56,7 +56,7 @@ app/
 
 ## Naming conventions
 
-## Files
+### Files
 Files will use snake-casing for the name, separted by a dot for the type and language to look like :
 
 	my-name.type.js
@@ -76,13 +76,13 @@ It makes it easier to directly identify files by their name.
 
 > app.module.js, app.config.js, app.routes.js, ...
 
-## In code
+### In code
 
-### Modules
+#### Modules
 
 
 
-### Controllers
+#### Controllers
 
 Controller will be exceptionnaly named using pascal-casing.
 Which is a standard for object that can be instantied through a constructor.
@@ -99,7 +99,7 @@ app
 
 ```
 
-### Factories & Services
+#### Factories & Services
 
 Factories & Services will be camel-cased.
 
@@ -113,7 +113,7 @@ function logger () { ... }
 
 ```
 
-### Directives
+#### Directives
 
 Directives will be camel-cased.
 An area prefix will be used to describe where the directive belongs.
