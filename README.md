@@ -10,9 +10,10 @@ But it is also made to describe the entire flow of the application, from packagi
 ## Table of Contents
 
   1. [Application Structure](#application-structure)
-  2. [Modules](#modules)
-  3. [Injections](#injections)
-  4. [Controllers](#controllers)
+  2. [Naming Conventions](#naming-conventions)
+  3. [Modules](#modules)
+  4. [Injections](#injections)
+  5. [Controllers](#controllers)
 
 ## Application Structure
 
@@ -52,6 +53,62 @@ app/
         index.controller.js
         
 ```					
+
+## Naming conventions
+
+## Files
+Files will use snake-casing for the name, separted by a dot for the type and language
+my-name.type.js
+
+- Modules: my-feature-name.module.js
+- Services & Factories: my-service-name.service.js
+- Controllers: my-controller-name.controller.js 
+- Directives: my-directive-name.directive.js
+- Filters: my-feature.filters.js
+- Constants: my-feature.constants.js
+- Config: my-feature.config.js
+
+It makes it easier to directly identify files by their name.
+
+## In code
+
+Global casing will be camel-casing.
+
+### Controllers
+
+Controller will be exceptionnaly named using pascal-casing.
+Which is a standard for object that can be instantied through a constructor.
+
+Controllers will have a "Controller" suffix to make it more explicitly descriptive.
+
+```javascript
+
+app
+	.module('app.layout')
+	.controller('LayoutController', LayoutController);
+	
+	function LayoutController() { ... }
+
+```
+
+### Factories
+
+Factories will be camel-cased.
+
+```javascript
+
+app
+	.module('app.core')
+	.factory('logger', logger);
+
+function logger () { ... }
+
+```
+
+### Directives
+
+Directives will be camel-cased.
+A area prefix will be used to describe where the directive belongs
 
 ## Modules
 
@@ -105,9 +162,9 @@ Angular resolves dependencies based on the name of parameters.
 ```javascript
 angular
 	.module('app.layout')
-	.controller('MyController', myController);
+	.controller('MyController', MyController);
 
-function myController(myService) {}
+function MyController(myService) {}
 ```
 
 Can be problematic after minification, parameters will be renamed like 'a' and will break the resolution of the dependencies.
@@ -119,9 +176,9 @@ Specify on the controller function the list of modules.
 ```javascript
 angular
 	.module('app.layout')
-	.controller('MyController, ["myService", myController]);
+	.controller('MyController, ["myService", MyController]);
 	
-	function myController(myService) {}
+	function MyController(myService) {}
 ```
 
 That approach is minification safe, but there is still room for improvement.
@@ -134,10 +191,10 @@ Specify all dependencies to inject through the $inject property of the controlle
 ```javascript
 angular
 	.module('app.layout')
-	.controller('MyController', myController);
+	.controller('MyController', MyController);
 	
-	myController.$inject = ['myService'];
-	function myController (myService) {}
+	MyController.$inject = ['myService'];
+	function MyController (myService) {}
 ```
 
 This approach is minification safe and keeps everything clear.
@@ -166,10 +223,10 @@ Still accessible from the $scope.myController (where myController is the name ch
 
 angular
 	.module('app.layout')
-	.controller('LayoutController', layoutController);
+	.controller('LayoutController', LayoutController);
 	
-layoutController.$inject = ['$scope'];
-function layoutController ($scope) {
+LayoutController.$inject = ['$scope'];
+function LayoutController ($scope) {
 	this.title = "Controller as fever !";
 	console.log($scope.layout === this); /// will return true
 }
@@ -213,9 +270,9 @@ However ParentController is accessible within the ChildController area.
 // Parent
 angular
 	.module('app.inheritance')
-	.controller('ParentController', parentController);
+	.controller('ParentController', ParentController);
 	
-function parentController () {
+function ParentController () {
 	var me = this;
 	me.value = "I'm the parent";
 }
@@ -223,9 +280,9 @@ function parentController () {
 // Child
 angular
 	.module('app.inheritance')
-	.controller('ChildController', childController);
+	.controller('ChildController', ChildController);
 	
-function childController () {
+function ChildController () {
 	var me = this;
 	console.log(me.value); // will log undefined
 }
@@ -235,7 +292,7 @@ Parent can be accessed from the Scope :
 
 ```javascript
 
-$scope.parent.value; // where parent is the name given to the controller 
+$scope.parent.value; // where parent is the name given to the controller through the ControllerAs
 
 ```
 
@@ -244,7 +301,7 @@ Has to be used carefully as ChildController cannot change parent and will not be
 
 ```javascript
 
-function childController () {
+function ChildController () {
 	ParentController.apply(this, options);
 }
 
