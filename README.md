@@ -3,7 +3,7 @@
 *Angular guidelines and tooling*
 
 One of the purpose is to describe global guidelines to follow for Web Applications using Angular.js.
-But it is also made to describe the entire flow of the application, from packaging to deployment.
+But it is also made to describe the entire flow of the application, from creation to deployment.
 
 *Inspired by [John Papa](https://github.com/johnpapa/angularjs-styleguide)* 
 
@@ -81,7 +81,7 @@ Files will use snake-casing for the name, separted by a dot for the type and lan
 #### Modules
 
 Module name will be named using camel-casing.
-The name will be made of the parent features.
+The name will be made of parent features separted by a dot.
 
 ```javascript
 
@@ -162,7 +162,7 @@ app
 	.module('app')
 	.constant('simpleConstant', 10)
 	.constant('complexConstant', {
-		PROPERTy_ONE: 'value one',
+		PROPERTY_ONE: 'value one',
 		PROPERTY_TWO: 'value two'
 	});
 
