@@ -70,7 +70,7 @@ Files will use snake-casing for the name, separted by a dot for the type and lan
 - Config: my-feature.config.js
 - Routes: my-feature.routes.js
 
-It makes it easier to directly identify files by their name.
+*Reasons:* It makes it easier to directly identify files by their name.
 
 > Main application files will always represent the "app" feature.
 
@@ -80,7 +80,23 @@ It makes it easier to directly identify files by their name.
 
 #### Modules
 
+Module name will be named using camel-casing.
+The name will be made of the parent features.
 
+```javascript
+
+// Parent feature
+app.module('app');
+
+// Core feature which is child of the app feature
+app.module('app.core');
+
+// Layout feature which is child of the app feature
+app.module('app.layout');
+
+...
+
+```
 
 #### Controllers
 
@@ -116,12 +132,13 @@ function logger () { ... }
 #### Directives
 
 Directives will be camel-cased.
+
 An area prefix will be used to describe where the directive belongs.
 
 *Reasons:*
 
-	- It make it easier to determine where does the directive come from.
-	- Avoid conflict.
+- It make it easier to determine where does the directive come from.
+- Avoid conflict.
 
 ```javascript
 
@@ -131,6 +148,24 @@ app
 	
 funtion xxMyDirective () { ... }
 	
+```
+
+#### Constants
+
+Constants will remain camel-cased and will have to describe explicitly the purpose of the constant.
+
+If constant value is an object, every property of that object has to be ALL_CAPS cased.
+
+```javascript 
+
+app
+	.module('app')
+	.constant('simpleConstant', 10)
+	.constant('complexConstant', {
+		PROPERTy_ONE: 'value one',
+		PROPERTY_TWO: 'value two'
+	});
+
 ```
 
 ## Modules
