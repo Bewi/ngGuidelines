@@ -54,7 +54,7 @@ app/
         
 ```					
 
-[Back to top](#ngGuidelines)
+[Back to top](#ngguidelines)
 
 ## Naming conventions
 
