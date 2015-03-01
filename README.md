@@ -54,6 +54,8 @@ app/
         
 ```					
 
+[Back to top](#ngGuidelines)
+
 ## Naming conventions
 
 ### Files
