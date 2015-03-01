@@ -170,6 +170,8 @@ app
 
 ```
 
+[Back to top](#ngguidelines)
+
 ## Modules
 
 ### Description 
@@ -210,6 +212,8 @@ angular
 	]);
 
 ```
+
+[Back to top](#ngguidelines)
 
 ## Injections
 
@@ -259,6 +263,8 @@ angular
 
 This approach is minification safe and keeps everything clear.
 Another advantage is that it mimmics the way [ngAnnotate](#ngAnnotate) works.
+
+[Back to top](#ngguidelines)
 
 ## Controllers
 
@@ -366,6 +372,8 @@ function ChildController () {
 }
 
 ```
+
+[Back to top](#ngguidelines)
 
 ## Tooling
  - Node.js
