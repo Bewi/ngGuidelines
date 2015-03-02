@@ -14,6 +14,7 @@ But it is also made to describe the entire flow of the application, from creatio
   3. [Modules](#modules)
   4. [Injections](#injections)
   5. [Controllers](#controllers)
+  6. [Traductions]((#traductions)
 
 ## Application Structure
 
