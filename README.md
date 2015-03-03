@@ -218,7 +218,17 @@ angular
 
 ## Injections
 
-There are three differents way to inject dependencies in angular:
+When injecting dependencies, external dependencies have to be injected first.
+
+*Reason*: It make it easier to detect dependencies on the list.
+
+```javascript
+
+MyController.$inject = ['$logger', '$i18next', 'myService'];
+
+```
+
+There are three differents ways to inject dependencies in angular:
 
 ### Implicit Annotation
 
