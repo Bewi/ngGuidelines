@@ -14,7 +14,8 @@ But it is also made to describe the entire flow of the application, from creatio
   3. [Modules](#modules)
   4. [Injections](#injections)
   5. [Controllers](#controllers)
-  6. [Traductions](#traductions)
+  6. [Directives](#directives)
+  7. [Traductions](#traductions)
 
 ## Application Structure
 
@@ -114,7 +115,7 @@ app
 	.module('app.layout')
 	.controller('LayoutController', LayoutController);
 	
-	function LayoutController() { ... }
+function LayoutController() { ... }
 
 ```
 
@@ -149,9 +150,13 @@ app
 	.module('app.components')
 	.directive('xxMyDirective', xxMyDirective);
 	
-funtion xxMyDirective () { ... }
+function xxMyDirective () { ... }
 	
 ```
+
+> To have a valid html, the directive name has to start with data-xx-my-directive (only on the HTML part)
+
+> This practice has to be avoided to keep the html file more readable.
 
 #### Constants
 
@@ -284,6 +289,8 @@ Another advantage is that it mimmics the way [ngAnnotate](#ngAnnotate) works.
 Controllers have to stay small and focused.
 All logic not related to that will be moved to services.
 
+Controllers NEVER manipulate the DOM, has to be done through directives link instead.
+
 ### ControllerAs over $scope
 
 ControllerAs approach of controller resolve a inheritence issue encoutered with $scope.
@@ -380,6 +387,162 @@ Has to be used carefully as ChildController cannot change parent and will not be
 
 function ChildController () {
 	ParentController.apply(this, options);
+}
+
+```
+
+[Back to top](#ngguidelines)
+
+## Directives
+
+Directives are made to be reusable. 
+They have to be as generic and flexible as possible.
+
+A directive has no reason to be if all it does can be replaced by css.
+
+### Initialisation
+
+```javascript
+
+app
+	.module('app')
+	.directive('xxxMyDirective', xxxMyDirective);
+
+function xxxMyDirective () {
+	return { ... };
+}
+
+```
+
+### Restrictions
+
+A directive can be restricted to be as AEC, respectivly attribute, element and class.
+
+By default a directive is restricted to AE, so either an attribute or an element.
+
+Class has to be avoided.
+
+*Reasons:* 
+- There is a high probability to have other classes on your element, which will make the directive to identify.
+- It makes it difficult to determine if a class is a directive or not.
+
+```javascript
+
+function xxxMyDirective () {
+	return { 
+		restrict: 'EA' // Default
+	};
+}
+
+```
+
+##### When to choose an element or attribute ?
+
+Use element when the directive manipulate his template.
+
+Prefer attribute when the directive decorate an existing element.
+
+### Templates
+
+Prefer to use templateUrl instead of template, except if the template is one html element.
+
+*Reason:* It make it easier to maintain an html file than an inline html code.
+
+```javascript
+// One tag template
+function xxxMyDirective() {
+	return {
+		template: '<div></div>'
+	};
+}
+
+// More complexe template
+function xxxMyDirective() {
+	return {
+		templateUrl: 'myComplexTemplate'
+	}
+}
+
+```
+
+```html
+
+<div>
+	<span></span>
+	<span></span>
+</div>
+
+```
+
+### Controller As
+
+To stay consistent, ControllerAs will be used for directives.
+
+As controller can be required by other directives, only needed behavior will be exposed.
+
+```javascript
+
+function xxMyDirective() {
+	return {
+		...
+		
+		controller: MyDirectiveController,
+		controllerAs: 'MyDirectiveController As vm'
+	}
+}
+
+function myDirectiveController() { ... }
+
+```
+
+> Never manipulate the DOM directly in the controller, use the link function instead
+
+### Isolated scope
+
+Use isolated scope to avoid conflicts with outter scope and to hide unnecessary information to the outside.
+
+By default isolated scope will not be bind to the controller.
+
+The property bindToController can be set to true to fix this behavior.
+
+```javascript
+
+function xxMyDirective() {
+	return {
+		...
+		
+		controller: MyDirectiveController,
+		controllerAs: 'MyDirectiveController As vm',
+		bindToController: true,
+		scope: { value: '=' }
+	}
+}
+
+function MyDirectiveController() { 
+	console.log(this.value); // Will output the initial value bind to the isolated scope.
+}
+
+```
+
+### Link
+
+Used to manipulate the DOM.
+
+Controller is automatically injected into the link function.
+But it can also be accessed through the scope.
+
+```javascript
+
+function MyDirectiveController() {
+	return {
+		link: link
+	};
+}
+
+function link (scope, element, attrs, controller) {
+	// Value is the same.
+	console.log('scope.vm.value %s', scope.vm.value);
+	console.log('controller.value %s', controller.value);
 }
 
 ```
