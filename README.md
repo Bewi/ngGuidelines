@@ -73,6 +73,7 @@ Files will use snake-casing for the name, separted by a dot for the type and lan
 - Constants: my-feature.constants.js
 - Config: my-feature.config.js
 - Routes: my-feature.routes.js
+- Translations: my-feature.language.json
 
 *Reasons:* It makes it easier to directly identify files by their name.
 
@@ -175,6 +176,20 @@ app
 	});
 
 ```
+
+#### Translations 
+
+Translations will be snake cased, to make them more readable inside html code.
+
+```javascript
+
+{
+	'my-key': 'Some text.'
+}
+
+```
+
+####
 
 [Back to top](#ngguidelines)
 
@@ -548,6 +563,70 @@ function link (scope, element, attrs, controller) {
 ```
 
 [Back to top](#ngguidelines)
+
+## Traductions
+
+Traductions will be achieved using i18next coupled with ng-i18next library.
+
+All information about ng-i18next can be found [here](https://github.com/i18next/ng-i18next).
+
+### Configuration
+
+### Usage
+
+#### In html
+
+There are two way to translate in html using ng-i18next.
+
+Using a directive or a filter. Both are used in appropriate case.
+
+Filter will be used for direct content of html element.
+
+*Reasons:*
+- It makes sense to keep the content where it will be shown.
+- It keeps the html tag clean.
+
+```html
+
+<!-- Translate 'my-key' -->
+<span>{ 'my-key' | i18next }</span>
+
+<!-- Translate $scope.myKey -->
+<span>{ myKey | i18next }</span>
+
+```
+
+Directives will be used for translation of html attribute.
+
+*Reasons:*
+- It is not possible to do it through the filter.
+- It does not makes sense to have a parameter translation on the content of the html element.
+
+```html
+
+<!-- Translate the title attribute of 'a' tag -->
+<a ng-i18next="[title]my-key"></a>
+
+<!-- Compiled element if my-key translation it My title -->
+<a title="My title"></a>
+
+```
+
+#### In javascript
+
+The library ng-i18next provide a Service that can be use inside Angular code.
+
+```javascript
+
+MyController.$inject = ['$i18next'];
+MyController($i18next) {
+	var translation = $i18next('my-key');
+}
+
+```
+
+> Has to be used only when really needed, prefer to use html way instead.
+
 
 ## Tooling
  - Node.js
