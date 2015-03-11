@@ -15,7 +15,8 @@ But it is also made to describe the entire flow of the application, from creatio
   4. [Injections](#injections)
   5. [Controllers](#controllers)
   6. [Directives](#directives)
-  7. [Traductions](#traductions)
+  7. [Routes](#routes)
+  8. [Traductions](#traductions)
 
 ## Application Structure
 
@@ -54,6 +55,11 @@ app/
     layout/
         index.html
         index.controller.js
+locales/
+	en/
+		app.en.json
+	fr/
+		app.fr.json
 libs/
 	angular.js
 	...
@@ -564,6 +570,10 @@ function link (scope, element, attrs, controller) {
 }
 
 ```
+
+[Back to top](#ngguidelines)
+
+### Routes
 
 [Back to top](#ngguidelines)
 
