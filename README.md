@@ -572,6 +572,69 @@ All information about ng-i18next can be found [here](https://github.com/i18next/
 
 ### Configuration
 
+#### Basic
+
+Basic configuration will be done on the configuration of the main app (app.config).
+
+```javascript
+
+$i18nextProvider.options = {
+		// Keep language state in a cookie
+        useCookie: true, 			
+        // Keep translations in local storage
+        useLocalStorage: false,
+        // Unvalidate the local storage after one week (default)
+        localStorageExpirationTime: 86400000,
+        // fallback language if no translation for current language
+        fallbackLng: 'en',
+        // language
+        lng: 'en',
+        // Location of all translation files, where lng is the language and ns is the namespace
+        resGetPath: 'locales/__lng__/__ns__.__lng__.json',
+        // Value to display while loading translations
+        defaultLoadingValue: '',
+        // namespace configuration
+        ns: {
+        	// Specify here all namespaces
+            namespaces: ['app'],
+            // Specify the default namespace
+            defaultNs: 'app'
+        }
+    };
+
+```
+
+#### Multiple namespaces
+
+If a feature is defined by a module, a namespace will be added to the translator.
+Otherwise translations will be added to "app" namespace.
+
+A provider will be made to manage namespaces at config time.
+Each module will add his own namespace.
+
+From that point the app config doesn't have to manage namespaces, but only pass them to the configuration of i18next.
+
+```javascript
+
+// on Feature module config
+function config(namespacesProvider) {
+	namespacesProvider.addNamespace('feature');
+}
+
+// on App module config
+function config($i18nextProvider, namespacesProvider) {
+	namespacesProvider.addNamespace('app');
+
+	$i18nextProvider.options = {
+		...,
+		ns {
+			namespaces: namespacesProvider.getNamespaces(),
+			defaultNs: 'app'
+		}
+}
+
+```
+
 ### Usage
 
 #### In html
