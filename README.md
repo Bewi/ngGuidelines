@@ -293,7 +293,7 @@ angular
 ```
 
 This approach is minification safe and keeps everything clear.
-Another advantage is that it mimmics the way [ngAnnotate](#ngAnnotate) works.
+Another advantage is that it mimmics the way [ngAnnotate](https://www.npmjs.com/package/grunt-ng-annotate) works.
 
 [Back to top](#ngguidelines)
 
