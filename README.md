@@ -37,6 +37,7 @@ Few features are default to each application:
 - Layout : Will contain the main application files
 
 ```javascript
+index.html
 app/
     app.module.js
     app.config.js
@@ -53,7 +54,9 @@ app/
     layout/
         index.html
         index.controller.js
-        
+libs/
+	angular.js
+	...
 ```					
 
 [Back to top](#ngguidelines)
