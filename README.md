@@ -133,6 +133,13 @@ function LayoutController() { ... }
 
 Factories & Services will be camel-cased.
 
+While naming, '$' sign is prohibited.
+
+*Reasons:*
+
+- The '$' sign is reserved for angular services.
+- Avoid conflicts with other services.
+
 ```javascript
 
 app
