@@ -575,6 +575,79 @@ function link (scope, element, attrs, controller) {
 
 ### Routes
 
+Route mapping will be achieved using [uiRouter](https://github.com/angular-ui/ui-router) library.
+
+Global routes will be registered on application config (app.routes.js).
+
+Modules will register their own routes.
+
+#### Configuration
+
+In the following example, the global configuration only specify the default view.
+Where movies module register his own route.
+
+*Reasons:*
+
+- Each module becomes responsible of managing his routes.
+- Main application doesn't have to know about sub module routes.
+- Make it easier to add / remove a module.
+
+To be consistent, controllerAs syntax has to be used.
+When talking about routes, try as much as possible to use 'vm' as alias.
+
+``` javascript
+
+// app.config
+angular
+        .module('app')
+        .config(configRoutes);
+
+configRoutes.$inject = ['$urlRouterProvider'];
+function configRoutes ($urlRouterProvider) {
+	$urlRouterProvider.otherwise("/movies");
+}
+
+// movies.config
+angular
+    .module('app.movies')
+    .config(configRoutes);
+
+configRoutes.$inject = ['$stateProvider'];
+function configRoutes($stateProvider){
+    $stateProvider
+        .state('movies', {
+            url: '/movies',
+            templateUrl: "app/movies/movies.html",
+            controllerAs: "vm",
+            controller: "MoviesController"
+        });
+}
+
+```
+
+#### Usage
+
+In html code only 2 elements are needed, 'ui-view' directive for content element and 'ui-sref' for link element.
+
+``` html
+
+<a ui-sref="movies">Movies</a>
+<div ui-view></div>
+
+```
+
+In controllers, $state service can be injected.
+One advantage of that service is that it provide the current state, for exemple 'movies', which make it easier to use than an url.
+
+``` javascript
+
+// Verify if parameter is the current state.
+function isRoute(r) {
+    return $state.$current.toString() === r;
+}
+
+```
+
 [Back to top](#ngguidelines)
 
 ## Traductions
