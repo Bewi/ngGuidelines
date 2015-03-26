@@ -171,7 +171,7 @@ function xxMyDirective () { ... }
 	
 ```
 
-> To have a valid html, the directive name has to start with data-xx-my-directive (only on the HTML part)
+> To have a valid html, the directive name has to start with "data"
 
 > This practice has to be avoided to keep the html file more readable.
 
@@ -214,6 +214,8 @@ Translations will be snake cased, to make them more readable inside html code.
 ### Description 
 
 Modules represent features, for each feature a module lives.
+
+> Note: Speaking about features on angular code, if a feature is only represented by html files then no module are needed.
 
 The main application module (app.module) has to remain small and will mainly hold all modules together.
 From that point, the app.module will represent the manifest of all features of the application.
@@ -289,7 +291,7 @@ angular
 	.module('app.layout')
 	.controller('MyController, ["myService", MyController]);
 	
-	function MyController(myService) {}
+function MyController(myService) {}
 ```
 
 That approach is minification safe, but there is still room for improvement.
@@ -304,8 +306,8 @@ angular
 	.module('app.layout')
 	.controller('MyController', MyController);
 	
-	MyController.$inject = ['myService'];
-	function MyController (myService) {}
+MyController.$inject = ['myService'];
+function MyController (myService) {}
 ```
 
 This approach is minification safe and keeps everything clear.
@@ -324,9 +326,11 @@ Controllers NEVER manipulate the DOM, has to be done through directives link ins
 
 ### ControllerAs over $scope
 
-ControllerAs approach of controller resolve a inheritence issue encoutered with $scope.
+ControllerAs approach of controller resolve an inheritence issue encoutered with $scope.
+
 It allows a better syntax by specifying a namespace for each controller.
-Still accessible from the $scope.myController (where myController is the name chosen).
+
+Still accessible from the $scope.myController (where myController is the alias).
 
 ```html
 <div ng-controller="LayoutController As layout">
@@ -497,7 +501,7 @@ function xxxMyDirective() {
 ```
 
 ```html
-
+<!-- myComplexemplate -->
 <div>
 	<span></span>
 	<span></span>
@@ -505,11 +509,20 @@ function xxxMyDirective() {
 
 ```
 
+> Note: Before deploying, concider moving template of a directive to a service.
+> That service will store the template using $templateCache.
+> Doing this avoid having to get it a first time and will improve performances.
+
 ### Controller As
 
 To stay consistent, ControllerAs will be used for directives.
 
 As controller can be required by other directives, only needed behavior will be exposed.
+
+Except for specifics scenarios, directives will have their own scope (isolated or not), to avoid poluting external scope.
+
+> Note: Isolated scope are completly independant.
+> Note: Non-isolated scope will inherite from parent scope (external). Creating a new scope is like having a new child.
 
 ```javascript
 
@@ -518,7 +531,8 @@ function xxMyDirective() {
 		...
 		
 		controller: MyDirectiveController,
-		controllerAs: 'MyDirectiveController As vm'
+		controllerAs: 'MyDirectiveController As vm',
+		scope: true // Create a new non-isolated scope
 	}
 }
 
@@ -591,6 +605,7 @@ Modules will register their own routes.
 #### Configuration
 
 In the following example, the global configuration only specify the default view.
+
 Where movies module register his own route.
 
 *Reasons:*
@@ -600,6 +615,7 @@ Where movies module register his own route.
 - Make it easier to add / remove a module.
 
 To be consistent, controllerAs syntax has to be used.
+
 When talking about routes, try as much as possible to use 'vm' as alias.
 
 ``` javascript
